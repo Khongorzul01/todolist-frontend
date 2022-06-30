@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../../src/input.css";
+import axios from "axios";
 
 import { useTodo } from "../context/todoContext";
 import { dataServices } from "../data/dataServices";
@@ -7,37 +8,28 @@ import { dataServices } from "../data/dataServices";
 export default function Todo() {
   const [todo, setTodo] = useTodo([]);
   const [desc, setDesc] = useState([]);
-  const handleList = async (e) => {
+  const handleList = (e) => {
     e.preventDefault();
     console.log(e.target[0].value);
-    return await fetch("http://localhost:5001/api/todo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    axios
+      .post("http://localhost:5001/api/todo", {
         title: e.target[0].value,
-        desciption: "dfc",
+        description: "dfc",
         checked_date: "2020-03-20",
-      }),
-      // .then((res) => {
-      //   console.log(res);
-      // })
-      // .catch((res) => {
-      //   console.log(res);
-      // }),
-    });
+      })
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((res) => {
+        console.log(res);
+      });
   };
 
   const onChangeInput = (e) => {
     setDesc(e.target.value);
     console.log(e.target.value);
   };
-  //   const handleClick = (e) => {
-  //     e.preventDefault();
-  //     console.log("old value: ", input);
-  //     setInput("New value");
-  //   };
+
   const handleDelete = () => {
     console.log("delete");
   };
@@ -100,6 +92,7 @@ export default function Todo() {
               />
             </div>
             <button
+              type="submit"
               className="mt-6 rounded-xl bg-purple-400 w-40 h-10 text-neutral-50 place-items-center text-center"
               placeholder="What's next"
             >
